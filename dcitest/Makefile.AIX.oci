@@ -1,0 +1,22 @@
+
+CC=xlC_r
+CXX=xlC_r
+CFLAGS=-O2 -qflag=i:w -qarch=pwr6 -qfullpath -qpic=small -qinline -qchars=signed -qalias=noansi -qmaxmem=8192 -qtls=initial-exec -qthreaded
+CXXFLAGS=-DBYTE_ORDER=4321 -I../../../include/oci/linux
+LDFLAGS=-q 64 -brtl -L../../../oci/.libs -lclntsh -lpthread -lssl
+
+OBJS = DciTest.o connect.o errcode.o package.o dcimisc.o testLob.o testNumber.o testPiece.o testUTF16.o testHandleType.o testDocCases.o
+
+all: DciTest
+
+DciTest: DciTest.o connect.o errcode.o package.o dcimisc.o testLob.o testNumber.o testPiece.o testUTF16.o testHandleType.o testDocCases.o
+
+check: all
+	./DciTest
+
+test: all
+	@ chmod u+x test-run.sh; \
+	./test-run.sh
+
+clean:
+	rm -f $(OBJS) DciTest

@@ -1,0 +1,42 @@
+# Makefile for oci test
+
+OS_PLATFORM=$(shell uname -s)
+
+ifeq ($(OS_PLATFORM), Linux)
+        CXX=g++
+        CXXFLAGS=-g -Wall
+        LDFLAGS=-lstdc++ -ldl -lpthread -lssl -lm 
+endif
+
+ifeq ($(OS_PLATFORM), SunOS)
+        CXX=CC
+        CXXFLAGS=-m64 -erroff -DSUNOS4_CC -DBYTE_ORDER=4321
+        LDFLAGS=-lpthread
+endif
+
+ifeq ($(OS_PLATFORM), AIX)
+        CC=xlC_r
+        CXX=xlC_r
+        CXXFLAGS=-DBYTE_ORDER=4321  -qflag=i:w -qarch=pwr6 -qfullpath -qpic=small -qinline -qchars=signed -qalias=noansi -qmaxmem=8192 -qtls=initial-exec -qthreaded
+        LDFLAGS=-q 64 -brtl -lpthread -lssl
+endif
+
+override CXXFLAGS := $(CXXFLAGS) -I../include/dci
+override LDFLAGS := $(LDFLAGS) -L../dci_lib -lclntsh
+
+OBJS = DciTest.o connect.o errcode.o package.o dcimisc.o testLob_linux.o testNumber.o testPiece.o testUTF16.o testHandleType.o testDocCases.o testDirpath.o 
+
+DciTest: DciTest.o connect.o errcode.o package.o dcimisc.o testLob_linux.o testNumber.o testPiece.o testUTF16.o testHandleType.o testDocCases.o testDirpath.o 
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+
+all: DciTest
+
+check: all
+	./DciTest
+
+test: all
+	@ chmod u+x test-run.sh; \
+	./test-run.sh
+
+clean:
+	rm -f $(OBJS) DciTest *.o

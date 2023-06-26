@@ -1,0 +1,25 @@
+/build
+/.cache
+/compile_commands.json
+
+# Visual Studio
+Backup*
+.vs
+*.ncb
+*.sdf
+*.sln
+*.vcproj
+*.vcxproj
+UpgradeLog*
+vc*.idb
+vc*.pdb
+
+*vcproj*.user
+*.vcxproj.filters
+*.suo
+
+/debug
+/release
+
+*.idb
+*.pdb

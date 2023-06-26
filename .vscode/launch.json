@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "test1.exe (Windows) launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/build/test1.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal"
+        }
+    ]
+}
